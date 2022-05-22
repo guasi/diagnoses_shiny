@@ -1,0 +1,24 @@
+﻿"List of ICD-10-CM diagnosis chapters and the corresponding 3-character CCSR abbreviation for the body system, v2022.1",
+ICD-10-CM Diagnosis Chapter,3-Character Abbreviation
+Certain Infectious and Parasitic Diseases,INF
+Neoplasms,NEO
+Diseases of the Blood and Blood Forming Organs and Certain Disorders Involving the Immune Mechanism,BLD
+"Endocrine, Nutritional and Metabolic Diseases",END
+"Mental, Behavioral and Neurodevelopmental Disorders",MBD
+Diseases of the Nervous System,NVS
+Diseases of the Eye and Adnexa,EYE
+Diseases of the Ear and Mastoid Process,EAR
+Diseases of the Circulatory System,CIR
+Diseases of the Respiratory System,RSP
+Diseases of the Digestive System,DIG
+Diseases of the Skin and Subcutaneous Tissue,SKN
+Diseases of the Musculoskeletal System and Connective Tissue,MUS
+Diseases of the Genitourinary System,GEN
+"Pregnancy, Childbirth and the Puerperium",PRG
+Certain Conditions Originating in the Perinatal Period,PNL
+"Congenital Malformations, Deformations and Chromosomal Abnormalities",MAL
+"Symptoms, Signs and Abnormal Clinical and Laboratory Findings, Not Elsewhere Classified",SYM
+"Injury, Poisoning and Certain Other Consequences of External Causes",INJ
+External Causes of Morbidity,EXT
+Factors Influencing Health Status and Contact with Health Services,FAC
+Unacceptable principal diagnosis (inpatient data) or first-listed diagnosis (outpatient data),XXX

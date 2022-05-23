@@ -1,0 +1,70 @@
+
+
+
+<div class="row">
+<div id="purpose" class="section level2 col-sm-6">
+<h2>Purpose</h2>
+<p>I was looking for data on outpatient medical services in the U.S. and
+found that the CDC’s <a href="https://www.cdc.gov/nchs/ahcd/index.htm">National Center for
+Health Statistics (NCHS)</a> holds a tight grip on this data. It’s
+pretty much inaccessible to someone like me, without access to SAS or
+STATA. I then looked for data at the DHHS’s <a href="https://www.hcup-us.ahrq.gov/overview.jsp">Health Care Cost and
+Utilization Project (HCUP)</a>, which provides actual data collected at
+hospitals and clinics and offers online access via <a href="https://hcupnet.ahrq.gov/">HCUP Net</a>. I thought I would
+familiarize myself with diagnoses in order to download pertinent data,
+but instead got sidetracked by the metadata of the metadata. One of the
+metadata files to understand the HCUP database is the metadata on
+diagnoses which amount to <strong>73,371</strong>, and the metadata to
+the metadata is a <strong>66 page PDF file</strong>!!. Easily navigating
+and searching the diagnoses became a project in itself.</p>
+<p>Thanks to the metadata of the metadata I was able to understand the
+system of classifying diagnoses. In this Shiny app you’ll find the
+Clinical Classifications Software Refined (CCSR)’s “21 body systems”
+labeled as <strong>“Chapters,”</strong> and their corresponding “530
+clinical categories” labeled as <strong>“Categories.”</strong> The
+International Classification of Diseases, Tenth Revision, Clinical
+Modification (ICD-10-CM) diagnoses are labeled as
+<strong>“Diagnoses.”</strong> This grouping is the great achievement of
+the CCSR!! For simplicity, I have used the following abbreviations:</p>
+<ul>
+<li>CHA (chapters) refers to CCSR 3-character code abbreviations</li>
+<li>CAT (categories) refers to CCSR codes</li>
+<li>DIA (diagnoses) refers to ICD-10-CM codes</li>
+</ul>
+<p>As I understand it, the <a href="https://www.hcup-us.ahrq.gov/toolssoftware/ccsr/ccs_refined.jsp">CCSR</a>
+was developed as a tool for <a href="https://www.hcup-us.ahrq.gov/overview.jsp">HCUP</a> given the size
+and complexity of the International Classification of Diseases.</p>
+</div>
+<div id="lessons" class="section level2 col-sm-6">
+<h2>Lessons</h2>
+<p>The first big challenge was cleaning the list of of diagnoses that
+came in a hard-to-manipulate CSV file. I learned how to do a 18 to 3
+long pivot.</p>
+<p>Once I got it cleaned, it was smooth sailing until I got to creating
+the search for diagnoses. I first tried to search for diagnoses that
+contained all search terms by matching terms with the regular expression
+pattern <code>(?=*term)(?=*term2)</code> … <code>(?=*termN)</code>. No
+matter the function I used, <code>regex</code>, <code>str_detect</code>,
+<code>stri_detect</code>, the matching process was extraordinarily slow.
+True, I was searching 73,000 entries with a few sentences each. I turned
+to <a href="https://stackoverflow.com/questions/72334928/r-fast-way-to-find-all-vector-elements-that-contain-all-search-terms">StackOverflow</a>
+for help and <a href="https://stackoverflow.com/users/8380272/onyambu"><span class="citation">@onyamby</span></a> provided an amazingly fast single
+line of code. It is surprisingly easy when you think about it, instead
+of looping through each string and matching all search terms with a
+regular expression, loop through each search term separately and then
+get the overlapping <code>TRUE</code> results. You can see the
+discussion <a href="https://stackoverflow.com/questions/72334928/r-fast-way-to-find-all-vector-elements-that-contain-all-search-terms">here</a>.</p>
+<p>The next challenge was trying to update a dependent table upon a
+click on a row using the <a href="https://rstudio.github.io/DT/">DT
+package</a>. But DT doesn’t make available full table information as
+<code>inputs</code> ready to be used by Shiny. For instance, if a user
+clicks on cell (2,3), you can’t know through DT the value for another
+cell in the same row, say cell (2,4). To solve this problem I store a
+vector of IDs of the “active” table. I think this is a waste of
+resources, but I made the best of it, instead of storing the whole
+“active” data frame, I store only an “index” vector.</p>
+<p>Now I can go back and get the real data I want! Anyone knows how to
+hack the HCUP interface to get raw data? I don’t want summary tables, I
+want to make my own analysis!</p>
+</div>
+</div>

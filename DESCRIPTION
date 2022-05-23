@@ -1,0 +1,8 @@
+Title: ICD-10-CM CCSR Diagnoses
+Author: Ingrid Lagos
+AuthorUrl: http://ilagos.rstudio.io/
+License: GPL-3
+DisplayMode: normal
+Description: A tool to browser medical diagnoses
+Tags: getting-started, medical diagnoses
+Type: Shiny

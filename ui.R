@@ -16,15 +16,12 @@ navbarPage("ICD-10-CM Diagnoses",
         h3("Diagnoses"),
         DTOutput("table_diagnosis")
       )
-    ),
-    br(),
-    p("CHA = Chapter; CAT = Category; DIA = Diagnosis")
+    )
   ),
   tabPanel("Explore by Search",
     textInput("t_search","Search diagnoses only"),
-    DTOutput("table_search"),
-    p("CHA = Chapter; CAT = Category; DIA = Diagnosis")),
-  tabPanel("About",
-    includeMarkdown("include/about.md")
-  )
+    DTOutput("table_search")
+  ),
+  tabPanel("About", includeHTML("www/about.html")),
+  tags$footer(includeHTML("www/footer.html"))
 )

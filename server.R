@@ -1,7 +1,10 @@
 function(input, output, session) {
+
   r <- reactiveValues(
     active_cats = NULL,
-    active_chas = NULL
+    active_chas = NULL,
+    active_srch = NULL,
+    saved_search = NULL
   )
 
   # Explore by Groups ---------------------------------
@@ -62,6 +65,7 @@ function(input, output, session) {
       options = list(paging = F, scrollY = "500")) %>% 
       formatStyle(2, `font-size` = "75%")
   })
+  
   # Explore by Search -------------------------------
   
   output$table_search <- renderDT({
@@ -72,11 +76,29 @@ function(input, output, session) {
       filter(Reduce("&", lapply(search_terms, grepl, icd_10_code_description, c(fixed = TRUE, ignore_case = TRUE)))) %>% 
       select(ccsr_code, ccsr_description, icd_10_code, icd_10_code_description)
     
+    r$active_srch <- dt$icd_10_code
+    
     datatable(dt,
       style = "bootstrap",
       colnames = c("CAT", "Category Description", "DIA", "Diagnosis Description"),
       rownames = FALSE,
-      selection = "none",
+      selection = "multiple",
       options = list(searching = F))
+  })
+  
+  observeEvent(input$bt_add, {
+    r$saved_search <- c(r$saved_search, r$active_srch[input$table_search_rows_selected])
+    
+    text_value <- dxccsr_data %>%
+      filter(icd_10_code %in% r$saved_search) %>% 
+      mutate(v = paste(icd_10_code, icd_10_code_description)) %>% 
+      .$v
+    
+    updateTextAreaInput(session,"ta_added", value = str_c(text_value, collapse = "\n"))
+  })
+  
+  observeEvent(input$bt_clear, {
+    r$saved_search = NULL
+    updateTextAreaInput(session,"ta_added", value = "")
   })
 }

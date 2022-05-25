@@ -1,18 +1,19 @@
 navbarPage("ICD-10-CM Diagnoses",
+  tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")),
+  theme = td_theme,
   tags$script(micro_js),
-  theme = shinythemes::shinytheme("cosmo"),
   collapsible = T,
   
   tabPanel("Explore by Group",
     fluidRow(
       column(4,
-        p(strong("Chapters"), class = "text-info"),
+        p(strong("Chapters"), class = "text-primary"),
         DTOutput("table_chapter")),
       column(4,
-        p(strong("Categories"), class = "text-warning"),
+        p(strong("Categories"), class = "text-primary"),
         DTOutput("table_category")),
       column(4,
-        p(strong("Diagnoses"), class = "text-success"),
+        p(strong("Diagnoses"), class = "text-primary"),
         DTOutput("table_diagnosis"))
     )
   ),
@@ -22,10 +23,9 @@ navbarPage("ICD-10-CM Diagnoses",
              DTOutput("table_search")),
       column(3,
              textInput("t_search","Search diagnoses", value = "contusion great toe"),
-             hr(),
-             actionButton("bt_clear", "clear box", class = "btn-warning btn-sm pull-right"),
-             actionButton("bt_add","add selected", class = "btn-primary btn-sm", style = "margin-bottom:5px"),
-             textAreaInput("ta_added",NULL, height = "380px"))
+             textAreaInput("ta_added","Add selected", height = "380px"),
+             actionButton("bt_add","add", class = "btn-primary btn-sm"),
+             actionButton("bt_clear", "clear", class = "btn-warning btn-sm"))
     )
   ),
   tabPanel("About", includeHTML("www/about.html")),

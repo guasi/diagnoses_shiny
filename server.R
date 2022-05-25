@@ -19,7 +19,7 @@ function(input, output, session) {
     r$active_chas <- dt$ccsr_chapter
     
     datatable(dt,
-      style = "bootstrap",
+      style = "auto",
       colnames = c("CHA","Description","CATs","DIAs"),
       rownames = FALSE,
       selection = list(mode = "single", selected = 1),
@@ -29,8 +29,9 @@ function(input, output, session) {
   })
   
   output$table_category <- renderDT({
-    if (is.null(input$table_chapter_rows_selected)) return()
-    code <- r$active_chas[input$table_chapter_rows_selected]
+    ifelse(is.null(input$table_chapter_rows_selected),
+           code <- r$active_chas[1],
+           code <- r$active_chas[input$table_chapter_rows_selected])
 
     dt <- dxccsr_data %>% 
       filter(ccsr_chapter == code) %>% 
@@ -40,7 +41,7 @@ function(input, output, session) {
     r$active_cats <- dt$ccsr_code
 
     datatable(dt,
-      style = "bootstrap",
+      style = "auto",
       colnames = c("CAT","Description","DIAs"),
       rownames = FALSE,
       selection = list(mode = "single", selected = 1),
@@ -50,15 +51,16 @@ function(input, output, session) {
   })
   
   output$table_diagnosis <- renderDT({
-    if (is.null(input$table_category_rows_selected)) return()
-    code <- r$active_cats[input$table_category_rows_selected]
+    ifelse(is.null(input$table_category_rows_selected),
+            code <- r$active_cats[1],
+            code <- r$active_cats[input$table_category_rows_selected])
     
     dt <- dxccsr_data %>% 
       filter(ccsr_code == code) %>% 
       select(icd_10_code, icd_10_code_description)
     
     datatable(dt,
-      style = "bootstrap",
+      style = "auto",
       colnames = c("DIA","Description"),
       rownames = FALSE,
       selection = "none",
@@ -79,11 +81,12 @@ function(input, output, session) {
     r$active_srch <- dt$icd_10_code
     
     datatable(dt,
-      style = "bootstrap",
+      style = "auto",
       colnames = c("CAT", "Category Description", "DIA", "Diagnosis Description"),
       rownames = FALSE,
+      height = 500,
       selection = "multiple",
-      options = list(searching = F))
+      options = list(searching = F, search = list(search = isolate(input$t_search))))
   })
   
   observeEvent(input$bt_add, {
@@ -94,7 +97,7 @@ function(input, output, session) {
       mutate(v = paste(icd_10_code, icd_10_code_description)) %>% 
       .$v
     
-    updateTextAreaInput(session,"ta_added", value = str_c(text_value, collapse = "\n"))
+    updateTextAreaInput(session,"ta_added", value = paste(text_value, collapse = "\n"))
   })
   
   observeEvent(input$bt_clear, {

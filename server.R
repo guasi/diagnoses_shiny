@@ -72,7 +72,7 @@ function(input, output, session) {
   
   output$table_search <- renderDT({
     input$keyPressed
-    search_terms <- str_split(isolate(input$t_search), " ", simplify = T)
+    search_terms <- unlist(strsplit(isolate(input$t_search), " "))
     
     dt <- dxccsr_data %>% 
       filter(Reduce("&", lapply(search_terms, grepl, icd_10_code_description, c(fixed = TRUE, ignore_case = TRUE)))) %>% 

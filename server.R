@@ -4,7 +4,8 @@ function(input, output, session) {
     active_cats = NULL,
     active_chas = NULL,
     active_srch = NULL,
-    saved_search = NULL
+    added_dias = NULL,
+    added_dt = NULL
   )
 
   # Explore by Groups ---------------------------------
@@ -72,7 +73,7 @@ function(input, output, session) {
   
   output$table_search <- renderDT({
     input$keyPressed
-    search_terms <- unlist(strsplit(isolate(input$t_search), " "))
+    search_terms <- stringr::str_split(isolate(input$t_search), " ", simplify = T)
     
     dt <- dxccsr_data %>% 
       filter(Reduce("&", lapply(search_terms, grepl, icd_10_code_description, c(fixed = TRUE, ignore_case = TRUE)))) %>% 
@@ -90,18 +91,25 @@ function(input, output, session) {
   })
   
   observeEvent(input$bt_add, {
-    r$saved_search <- c(r$saved_search, r$active_srch[input$table_search_rows_selected])
-    
-    text_value <- dxccsr_data %>%
-      filter(icd_10_code %in% r$saved_search) %>% 
-      mutate(v = paste(icd_10_code, icd_10_code_description)) %>% 
-      .$v
-    
-    updateTextAreaInput(session,"ta_added", value = paste(text_value, collapse = "\n"))
+    r$added_dias <- c(r$added_dias, r$active_srch[input$table_search_rows_selected])
+    r$added_dt <- dxccsr_data %>%
+      filter(icd_10_code %in% r$added_dias) %>% 
+      select(ccsr_code, ccsr_description, icd_10_code, icd_10_code_description)
+  })
+  
+  output$table_added <- renderDT({
+    datatable(r$added_dt,
+      style = "auto",
+      colnames = c("CAT", "Category Description", "DIA", "Diagnosis Description"),
+      rownames = F,
+      selection = "none",
+      extensions = "Buttons",
+      options = list(dom = "Btlirp", searching = F, 
+                     buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
   })
   
   observeEvent(input$bt_clear, {
-    r$saved_search = NULL
-    updateTextAreaInput(session,"ta_added", value = "")
+    r$added_dias = NULL
+    r$added_dt = NULL
   })
 }

@@ -19,13 +19,17 @@ navbarPage("ICD-10-CM Diagnoses",
   ),
   tabPanel("Explore by Search",
     fluidRow(
-      column(9,
+      column(6,
+             textInput("t_search",NULL, value = "contusion great toe"),
              DTOutput("table_search")),
-      column(3,
-             textInput("t_search","Search diagnoses", value = "contusion great toe"),
-             textAreaInput("ta_added","Add selected", height = "380px"),
-             actionButton("bt_add","add", class = "btn-primary btn-sm"),
-             actionButton("bt_clear", "clear", class = "btn-warning btn-sm"))
+      column(6,
+             actionButton("bt_add","save selected", class = "btn btn-primary btn-sm mb-2"),
+             actionButton("bt_clear", "clear saved", class = "btm btn-warning btn-sm mb-2"),
+             DTOutput("table_added"),
+             HTML("<div class='alert alert-dismissible alert-secondary'>
+                    <button type='button' class='btn-close' data-bs-dismiss = 'alert'></button>
+                    <strong>Search</strong> for a diagnosis and <strong>click</strong> on a row to select a particular result. Once selected you can save it for copying or downloading.
+                  </div>"))
     )
   ),
   tabPanel("About", includeHTML("www/about.html")),

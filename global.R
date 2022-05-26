@@ -24,9 +24,3 @@ td_theme = bslib::bs_theme(version = 5,
                            font_scale = .8,
                            "table-cell-padding-y" = ".2rem")
 
-# Includes ------------------------------------------
-rmarkdown::render("include/about.md",
-                  output_file = "about.html",
-                  output_format = "html_fragment",
-                  output_dir = "www",
-                  run_pandoc = T)

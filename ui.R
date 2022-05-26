@@ -1,7 +1,7 @@
 navbarPage("ICD-10-CM Diagnoses",
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")),
   theme = td_theme,
-  tags$script(micro_js),
+  tags$script(enter_to_search_js),
   collapsible = T,
   
   tabPanel("Explore by Group",
@@ -26,12 +26,11 @@ navbarPage("ICD-10-CM Diagnoses",
              actionButton("bt_add","save selected", class = "btn btn-primary btn-sm mb-2"),
              actionButton("bt_clear", "clear saved", class = "btm btn-warning btn-sm mb-2"),
              DTOutput("table_added"),
-             HTML("<div class='alert alert-dismissible alert-secondary'>
-                    <button type='button' class='btn-close' data-bs-dismiss = 'alert'></button>
-                    <strong>Search</strong> for a diagnosis and <strong>click</strong> on a row to select a particular result. Once selected you can save it for copying or downloading.
-                  </div>"))
+             HTML(click_to_select_alert))
     )
   ),
   tabPanel("About", includeHTML("www/about.html")),
+  bslib::nav_spacer(),
+  bslib::nav_item(tags$a(icon("github", class="fa-lg"), href = "https://github.com/guasi/diagnoses_shiny")),
   tags$footer(includeHTML("www/footer.html"))
 )

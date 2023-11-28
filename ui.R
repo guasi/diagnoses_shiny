@@ -23,8 +23,8 @@ navbarPage("ICD-10-CM Diagnoses",
              textInput("t_search",NULL, value = "contusion great toe"),
              DTOutput("table_search")),
       column(6,
-             actionButton("bt_add","save selected", class = "btn btn-primary btn-sm mb-2"),
-             actionButton("bt_clear", "clear saved", class = "btm btn-warning btn-sm mb-2"),
+             actionButton("bt_add","export", class = "btn btn-primary btn-sm mb-2"),
+             actionButton("bt_clear", "clear", class = "btm btn-warning btn-sm mb-2"),
              DTOutput("table_added"),
              HTML(click_to_select_alert))
     )
